@@ -318,7 +318,7 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--chip);padding:1px
   </section>
 
   <footer>
-    Built 2026-11-09 · Data: pinyin-pro (MIT), to-jyutping (BSD-2), OpenCC (Apache-2.0), Campbell’s Amoy dictionary via ChhoeTaigi (CC BY-NC-SA 3.0 TW), Taiwan MOE Hakka dictionary (CC BY-ND 3.0 TW), Wiktionary Teochew via teochew-works (CC BY-SA 4.0). See the guide tab for details. Results are search aids, not identity verification.
+    Built 2026-11-12 · Data: pinyin-pro (MIT), to-jyutping (BSD-2), OpenCC (Apache-2.0), Campbell’s Amoy dictionary via ChhoeTaigi (CC BY-NC-SA 3.0 TW), Taiwan MOE Hakka dictionary (CC BY-ND 3.0 TW), Wiktionary Teochew via teochew-works (CC BY-SA 4.0). See the guide tab for details. Results are search aids, not identity verification.
   </footer>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -708,9 +708,13 @@ function cantoSyl(jp, region) {
   let finals = (HK_FIN[fin] || [fin]).slice();
   let inis;
   switch (ini) {
-    case 'b': case 'p': inis = ['p']; break;
-    case 'd': case 't': inis = ['t']; break;
-    case 'g': case 'k': inis = ['k']; break;
+    // unaspirated b/d/g: official HK spelling P/T/K (白 Pak), but B/D/G is also common in names (Chan Siu-bak)
+    case 'b': inis = ['p', 'b']; break;
+    case 'd': inis = ['t', 'd']; break;
+    case 'g': inis = ['k', 'g']; break;
+    case 'p': inis = ['p']; break;
+    case 't': inis = ['t']; break;
+    case 'k': inis = ['k']; break;
     case 'gw': case 'kw': inis = ['kw']; break;
     case 'z': case 'c':
       inis = ['e', 'ang', 'i', 'eoi'].includes(fin) && region === 'hk' ? ['ts', 'ch'] : ['ch', 'ts'];
@@ -759,9 +763,13 @@ function macauSyl(ini, fin) {
   let fins = F[fin] || HK_FIN[fin] || [fin];
   let inis;
   switch (ini) {
-    case 'b': case 'p': inis = ['p']; break;
-    case 'd': case 't': inis = ['t']; break;
-    case 'g': case 'k': inis = ['k']; break;
+    // unaspirated b/d/g: official HK spelling P/T/K (白 Pak), but B/D/G is also common in names (Chan Siu-bak)
+    case 'b': inis = ['p', 'b']; break;
+    case 'd': inis = ['t', 'd']; break;
+    case 'g': inis = ['k', 'g']; break;
+    case 'p': inis = ['p']; break;
+    case 't': inis = ['t']; break;
+    case 'k': inis = ['k']; break;
     case 'gw': case 'kw': inis = ['ku', 'kw']; break;
     case 'z': case 'c': inis = ['ch']; break;
     case 'j': inis = ['i', 'y']; if (fin.startsWith('i') || fin.startsWith('yu')) { inis = ['']; fins = fin.startsWith('yu') ? ['u', 'iu'] : fin === 'iu' ? ['io', 'iu'] : [fin.replace(/^ing$/, 'ieng').replace(/^ik$/, 'iek')]; } break;
